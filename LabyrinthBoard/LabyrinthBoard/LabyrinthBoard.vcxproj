@@ -79,7 +79,8 @@
     <ClCompile Include="BfsSolver.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cell.cpp" />
-    <ClCompile Include="DfsSolver.cpp" />
+    <ClCompile Include="CellDefinitions.cpp" />
+    <ClCompile Include="CellDefinitions.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Solver.cpp" />
   </ItemGroup>
@@ -87,7 +88,8 @@
     <ClInclude Include="BfsSolver.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Cell.h" />
-    <ClInclude Include="DfsSolver.h" />
+    <ClInclude Include="CellInfo.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Solver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

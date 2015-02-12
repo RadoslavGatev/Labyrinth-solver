@@ -3,14 +3,15 @@
 
 #include <stack>
 
+#include <vector>
 #include "Solver.h"
 
 
 class DfsSolver : public Solver
 {
 private:
-	virtual bool PathExists_Internal(Board& board, Cell* pStart);
-	void AddIfPassableAndNotVisited(std::stack<Cell*> & cellStack, Cell* pCell);
+	virtual std::vector<char> Solve(Board& board, Cell* pStart);
+	void AddIfPassableAndNotVisited(std::stack<std::tuple<char, Cell*>> & cellStack, Cell* pCell, char direction);
 };
 
 

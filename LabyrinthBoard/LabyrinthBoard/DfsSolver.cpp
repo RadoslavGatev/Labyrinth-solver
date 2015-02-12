@@ -1,7 +1,10 @@
 #include <iostream>
 #include <stack>
 
+#include <deque>
+#include <tuple>
 #include "DfsSolver.h"
+#include "Point.h"
 
 
 /**
@@ -10,22 +13,32 @@
  *	between pStart and the target cell in the board.
  *
  */
-bool DfsSolver::PathExists_Internal(Board& board, Cell* pStart)
+std::vector<char> DfsSolver::Solve(Board& board, Cell* pStart)
 {
 	std::cout << "Solving with DFS\n\n";
 
-	std::stack<Cell*> cellStack;
+	Point** path = new Point*[board.GetRowsCount()];
 
-	cellStack.push(pStart);
+	for (size_t i = 0; i < board.GetRowsCount(); i++)
+	{
+		path[i] = new Point[board.GetColsCount];
+	}
+
+	std::stack<std::tuple<char, Cell*>> cellStack;
+
+	cellStack.push(std::make_tuple(' ', pStart));
 
 	Cell* pCurrent = NULL;
 	Cell* pNeghbour = NULL;
+	std::deque<char> path;
 
-	while( ! cellStack.empty())
+	while (!cellStack.empty())
 	{
 		// Get the next element from the stack
-		pCurrent = cellStack.top();
+		pCurrent = std::get<1>(cellStack.top());
+
 		pCurrent->MarkVisited();
+		path.push_back(std::get<0>(cellStack.top()));
 		cellStack.pop();
 
 		// Display some information
@@ -34,22 +47,32 @@ bool DfsSolver::PathExists_Internal(Board& board, Cell* pStart)
 		pCurrent->PrintInfo();
 		std::cout << std::endl;
 
-		if(pCurrent->IsTarget())
+		if (pCurrent->IsTarget())
 		{
 			// If the target is found, then there is a path
-			return true;
+			break;
 		}
 		else
 		{
 			// Otherwise keep looking
-			AddIfPassableAndNotVisited(cellStack, pCurrent->GetLeftNeighbour());
-			AddIfPassableAndNotVisited(cellStack, pCurrent->GetRightNeighbour());
-			AddIfPassableAndNotVisited(cellStack, pCurrent->GetTopNeighbour());
-			AddIfPassableAndNotVisited(cellStack, pCurrent->GetBottomNeighbour());
+
+			AddIfPassableAndNotVisited(cellStack, pCurrent->GetLeftNeighbour(), 'L');
+			AddIfPassableAndNotVisited(cellStack, pCurrent->GetRightNeighbour(), 'R');
+			AddIfPassableAndNotVisited(cellStack, pCurrent->GetTopNeighbour(), 'U');
+			AddIfPassableAndNotVisited(cellStack, pCurrent->GetBottomNeighbour(), 'D');
 		}
 	}
 
-	return false;
+
+
+	for (size_t i = 0; i < board.GetRowsCount(); i++)
+	{
+		delete[] path[i];
+	}
+
+	delete[] path;
+
+	return (std::vector<char>)path;
 }
 
 
@@ -60,13 +83,13 @@ bool DfsSolver::PathExists_Internal(Board& board, Cell* pStart)
  *	The function also marks the cell as visited.
  *
  */
-void DfsSolver::AddIfPassableAndNotVisited(std::stack<Cell*> & cellStack, Cell* pCell)
+void DfsSolver::AddIfPassableAndNotVisited(std::stack<std::tuple<char, Cell*>> & cellStack, Cell* pCell, char direction)
 {
 	std::cout << "      Should we add ";
 	pCell->PrintInfo();
 	std::cout << "? ...";
 
-	if(pCell && pCell->IsPassable() && ! pCell->IsVisited())
+	if (pCell && pCell->IsPassable() && !pCell->IsVisited())
 	{
 		std::cout << "Yes";
 

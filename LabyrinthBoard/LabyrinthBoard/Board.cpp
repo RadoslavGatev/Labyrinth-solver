@@ -46,7 +46,7 @@ Cell** Board::AllocateNewBoard(int RowsCount, int ColsCount)
 	}
 
 	// If the board was allocated, set the current object as an owner
-	if(ppNewBoard)
+	if (ppNewBoard)
 	{
 		SetAsOwnerFor(ppNewBoard, RowsCount, ColsCount);
 	}
@@ -71,9 +71,9 @@ void Board::FreeBoard(Cell**& ppBoard, int RowsCount)
 	if (!ppBoard)
 		return;
 
-	for(int row = 0; row < RowsCount; row++)
+	for (int row = 0; row < RowsCount; row++)
 	{
-		delete [] ppBoard[row];
+		delete[] ppBoard[row];
 	}
 
 	delete[] ppBoard;
@@ -93,13 +93,13 @@ void Board::FreeBoard(Cell**& ppBoard, int RowsCount)
  *
  *	\param [in] ppBoard
  *		A pointer to the board to clone
- *		
+ *
  *	\param [in] RowsCount
  *		The number of rows in the board.
  *
  *	\param [in] ColsCount
  *		The number of columns in the board.
- *		
+ *
  *	\return
  *		A pointer to the cloned board or NULL if the function fails
  *
@@ -107,12 +107,12 @@ void Board::FreeBoard(Cell**& ppBoard, int RowsCount)
 Cell** Board::DuplicateBoard(const Cell** ppBoard, int RowsCount, int ColsCount)
 {
 	Cell** ppNewBoard = AllocateNewBoard(RowsCount, ColsCount);
-	
-	if(ppNewBoard)
+
+	if (ppNewBoard)
 	{
-		for(int row = 0; row < RowsCount; row++)
+		for (int row = 0; row < RowsCount; row++)
 		{
-			for(int col = 0; col < ColsCount; col++)
+			for (int col = 0; col < ColsCount; col++)
 			{
 				ppNewBoard[row][col] = ppBoard[row][col];
 			}
@@ -143,7 +143,7 @@ Cell** Board::DuplicateBoard(const Board & board)
  *
  *	\param [in] ppBoard
  *		A pointer to the board to own.
- *		
+ *
  *	\param [in] RowsCount
  *		The number of rows in the board.
  *
@@ -153,9 +153,9 @@ Cell** Board::DuplicateBoard(const Board & board)
  */
 void Board::SetAsOwnerFor(Cell** ppOtherBoard, int RowsCount, int ColsCount)
 {
-	for(int row = 0; row < RowsCount; row++)
+	for (int row = 0; row < RowsCount; row++)
 	{
-		for(int col = 0; col < ColsCount; col++)
+		for (int col = 0; col < ColsCount; col++)
 		{
 			ppOtherBoard[row][col].SetBoard(this);
 		}
@@ -173,12 +173,14 @@ Board::Board()
 	ppBoard = NULL;
 	ColsCount = 0;
 	RowsCount = 0;
+	startColumn = -1;
+	startRow = -1;
 }
 
 
 /**
  *
- * Creates a new board and copies its contents from another.	
+ * Creates a new board and copies its contents from another.
  *
  */
 Board::Board(const Board & board)
@@ -205,11 +207,11 @@ Board::~Board()
  */
 Board & Board::operator=(Board const & board)
 {
-	if(this != &board)
+	if (this != &board)
 	{
 		Cell ** ppNewBoard = DuplicateBoard(board);
 
-		if(ppNewBoard)
+		if (ppNewBoard)
 		{
 			FreeBoard(ppBoard, RowsCount);
 			ppBoard = ppNewBoard;
@@ -250,7 +252,7 @@ int Board::GetColsCount() const
  *
  *	\param [in] Filename
  *		Path to the file to read from.
- *		
+ *
  *	\return
  *		true if the function succeeds or false otherwise.
  *
@@ -259,7 +261,7 @@ bool Board::LoadFromFile(const char* Filename)
 {
 	std::ifstream InputFile(Filename);
 
-	if( ! InputFile)
+	if (!InputFile)
 	{
 		return false;
 	}
@@ -267,14 +269,14 @@ bool Board::LoadFromFile(const char* Filename)
 	int Rows = 0;
 	int Cols = 0;
 
-	if( ! GetBoardDimensionsFromFile(InputFile, Rows, Cols))
+	if (!GetBoardDimensionsFromFile(InputFile, Rows, Cols))
 	{
 		return false;
 	}
 
 	Cell ** ppNewBoard = AllocateNewBoard(Rows, Cols);
 
-	if( ! ppNewBoard)
+	if (!ppNewBoard)
 	{
 		return false;
 	}
@@ -322,7 +324,7 @@ bool Board::GetBoardDimensionsFromFile(std::ifstream & InputFile, int& RowsCount
 
 	char c = 0;
 	int counter = 0;
-		
+
 	// Find the number of columns in the board
 	while (InputFile.get(c) && c != '\n')
 		cols++;
@@ -381,15 +383,21 @@ void Board::ReadBoardFromFile(std::ifstream & InputFile, Cell ** ppBoard)
 	int col = 0;
 	char c;
 
-	while(InputFile.get(c))
+	while (InputFile.get(c))
 	{
-		if(c == '\n')
+		if (c == '\n')
 		{
 			row++;
 			col = 0;
 		}
 		else
 		{
+			if (c == CellDefinitions::Start)
+			{
+				startRow = row;
+				startColumn = col;
+			}
+
 			ppBoard[row][col] = Cell(this, c, row, col);
 			col++;
 		}
@@ -407,7 +415,7 @@ void Board::ReadBoardFromFile(std::ifstream & InputFile, Cell ** ppBoard)
  */
 Cell* Board::GetCell(int Row, int Col) const
 {
-	if(	Row >= 0 && Row < RowsCount &&
+	if (Row >= 0 && Row < RowsCount &&
 		Col >= 0 && Col < ColsCount)
 	{
 		return &ppBoard[Row][Col];
@@ -415,7 +423,7 @@ Cell* Board::GetCell(int Row, int Col) const
 	else
 	{
 		return NULL;
-	}	
+	}
 }
 
 
@@ -427,18 +435,12 @@ Cell* Board::GetCell(int Row, int Col) const
  */
 Cell* Board::GetStart() const
 {
-	for(int row = 0; row < RowsCount; row++)
+	if (startRow == -1 || startColumn == -1)
 	{
-		for(int col = 0; col < ColsCount; col++)
-		{
-			if(ppBoard[row][col].IsStart())
-			{
-				return &ppBoard[row][col];
-			}
-		}
+		return NULL;
 	}
 
-	return NULL;
+	return &ppBoard[startRow][startColumn];
 }
 
 
@@ -449,9 +451,9 @@ Cell* Board::GetStart() const
  */
 void Board::Print() const
 {
-	for(int row = 0; row < RowsCount; row++)
+	for (int row = 0; row < RowsCount; row++)
 	{
-		for(int col = 0; col < ColsCount; col++)
+		for (int col = 0; col < ColsCount; col++)
 		{
 			std::cout << ppBoard[row][col].GetSymbol();
 		}
@@ -470,9 +472,9 @@ void Board::Print() const
  */
 void Board::MarkAllCellsNotVisited()
 {
-	for(int row = 0; row < RowsCount; row++)
+	for (int row = 0; row < RowsCount; row++)
 	{
-		for(int col = 0; col < ColsCount; col++)
+		for (int col = 0; col < ColsCount; col++)
 		{
 			ppBoard[row][col].MarkNotVisited();
 		}

@@ -3,7 +3,6 @@
 #include <string>
 
 #include "Board.h"
-#include "DfsSolver.h"
 #include "BfsSolver.h"
 
 
@@ -13,7 +12,7 @@ int main(int argc, char* argv[])
 	char path[_MAX_PATH];
 
 	// If the path is supplied as a command line argument, read it
-	if(argc == 2)
+	if (argc == 2)
 	{
 		strcpy_s(path, _MAX_PATH, argv[1]);
 	}
@@ -28,7 +27,7 @@ int main(int argc, char* argv[])
 
 	std::cout << "Trying to load labyrinth from \"" << path << "\"...";
 
-	if(board.LoadFromFile(path))
+	if (board.LoadFromFile(path))
 	{
 		std::cout << "done\n\n";
 
@@ -41,33 +40,26 @@ int main(int argc, char* argv[])
 			return 0;
 		}
 
-		// Now ask the user how he wants to search
-		// and create the appropriate solver object
-		std::cout << "Search with (B)FS or (D)FS: ";
-		char choice;
-		std::cin >> choice;
-
 		Solver* pSolver = NULL;
 
-		if (choice == 'B' || choice == 'b')
-		{
-			pSolver = new BfsSolver();
-		}
-		else
-		{
-			pSolver = new DfsSolver();
-		}
+		pSolver = new BfsSolver();
 
 		// Try to find the path
-		bool pathExists = pSolver->PathExists(board);
+		std::vector<char> pathExists = pSolver->PathExists(board);
+
+		std::cout << std::endl;
+		for (size_t i = 0; i < pathExists.size(); i++)
+		{
+			std::cout << pathExists.at(i);
+		}
 
 		// Do not forget to delete the solver object!
 		delete pSolver;
 
-		std::cout
-			<< "\n   "
-			<< (pathExists ? "There is a path!" : "Sorry, there is no path!")
-			<< std::endl;
+		/*	std::cout
+				<< "\n   "
+				<< (pathExists ? "There is a path!" : "Sorry, there is no path!")
+				<< std::endl;*/
 	}
 	else
 	{

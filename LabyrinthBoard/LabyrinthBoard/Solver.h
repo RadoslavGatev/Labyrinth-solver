@@ -1,6 +1,7 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
+#include <vector>
 #include "Cell.h"
 #include "Board.h"
 
@@ -11,10 +12,10 @@ public:
 	virtual ~Solver();
 
 public:
-	bool PathExists(Board& board);
+	std::vector<char> PathExists(Board& board);
 
 protected:
-	virtual bool PathExists_Internal(Board& board, Cell* pStart) = 0;
+	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart) = 0;
 };
 
 

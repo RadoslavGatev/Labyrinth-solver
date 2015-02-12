@@ -6,6 +6,7 @@
 class Board;
 
 #include "Cell.h"
+#include "CellDefinitions.h"
 	
 class Board
 {
@@ -20,6 +21,11 @@ private:
 
 	///	The number of columns in the board
 	int ColsCount;
+
+	CellDefinitions cellDefinitions;
+
+	int startRow;
+	int startColumn;
 
 private:
 	Cell** AllocateNewBoard(int RowsCount, int ColsCount);

@@ -21,11 +21,11 @@ Solver::~Solver()
  *
  *	This function does not actually search in the labyrinth.
  *	It just prepares and passes the necessary arguments to the
- *	PathExists_Internal() function, which does the actual search.
- *	
+ *	Solvehich does the actual search.
+ *
  *
  **/
-bool Solver::PathExists(Board& board)
+std::vector<char> Solver::PathExists(Board& board)
 {
 	std::cout << "Let's try to find if a path exists!\n\n";
 
@@ -37,18 +37,18 @@ bool Solver::PathExists(Board& board)
 	// Now try to find the starting cell, if such exists
 	Cell* pStart = board.GetStart();
 
-	if(pStart == NULL)
+	if (pStart == NULL)
 	{
 		// If there is no start cell, no search can be performed
 		std::cout << "There is no starting cell in the labyrinth!\n";
-		return false;
+
 	}
 	else
 	{
 		std::cout << "Starting from ";
 		pStart->PrintInfo();
 		std::cout << std::endl << std::endl;
-
-		return PathExists_Internal(board, board.GetStart());
 	}
+
+	return this->Solve_Internal(board, pStart);
 }

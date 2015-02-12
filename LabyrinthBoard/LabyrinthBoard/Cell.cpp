@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Cell.h"
+#include "CellDefinitions.h"
 
 /**
  *
@@ -48,7 +49,7 @@ void Cell::SetSymbol(char c)
  */
 bool Cell::IsPassable() const
 {
-	return Symbol != '#';
+	return Symbol == CellDefinitions::Corridor || Symbol == CellDefinitions::End;
 }
 
 
@@ -59,7 +60,7 @@ bool Cell::IsPassable() const
  */
 bool Cell::IsCorridor() const
 {
-	return Symbol == ' ';
+	return Symbol == CellDefinitions::Corridor;
 }
 
 
@@ -70,7 +71,7 @@ bool Cell::IsCorridor() const
  */
 bool Cell::IsWall() const
 {
-	return Symbol == '#';
+	return Symbol == CellDefinitions::Wall;
 }
 
 
@@ -81,7 +82,7 @@ bool Cell::IsWall() const
  */
 bool Cell::IsStart() const
 {
-	return Symbol == '^';
+	return Symbol == CellDefinitions::Start;
 }
 
 
@@ -92,7 +93,7 @@ bool Cell::IsStart() const
  */
 bool Cell::IsTarget() const
 {
-	return Symbol == '$';
+	return Symbol == CellDefinitions::End;
 }
 
 
@@ -219,11 +220,11 @@ Cell* Cell::GetBottomNeighbour() const
 void Cell::PrintInfo() const
 {
 	std::cout << "[ (" << Symbol
-			  << ") r" << Row
-			  << ", c" << Col
-			  << ", " << (IsPassable() ? "passable" : "BLOCKED")
-			  << ", " << (Visited ? "visited" : "NOT visited")
-			  << "]";
+		<< ") r" << Row
+		<< ", c" << Col
+		<< ", " << (IsPassable() ? "passable" : "BLOCKED")
+		<< ", " << (Visited ? "visited" : "NOT visited")
+		<< "]";
 }
 
 
