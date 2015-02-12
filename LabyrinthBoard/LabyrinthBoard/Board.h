@@ -7,7 +7,7 @@ class Board;
 
 #include "Cell.h"
 #include "CellDefinitions.h"
-	
+
 class Board
 {
 private:
@@ -36,7 +36,8 @@ private:
 
 private:
 	static bool GetBoardDimensionsFromFile(std::ifstream & InputFile, int& RowsCount, int& ColsCount);
-	void ReadBoardFromFile(std::ifstream & InputFile, Cell ** ppBoard);	
+	void ReadBoardFromFile(std::ifstream & InputFile, Cell ** ppBoard);
+	void FindDoorsAndKeys();
 
 public:
 	Board();
@@ -56,6 +57,7 @@ public:
 	void Print() const;
 
 	void MarkAllCellsNotVisited();
+	CellDefinitions& GetDefinitions();
 };
 
 #endif // BOARD_H

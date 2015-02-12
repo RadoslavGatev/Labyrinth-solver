@@ -96,6 +96,16 @@ bool Cell::IsTarget() const
 	return Symbol == CellDefinitions::End;
 }
 
+bool Cell::IsKey() const
+{
+	return this->pBoard->GetDefinitions().IsKey(Symbol);
+}
+
+bool Cell::IsDoor() const
+{
+	return this->pBoard->GetDefinitions().IsDoor(Symbol);
+}
+
 
 /**
  *

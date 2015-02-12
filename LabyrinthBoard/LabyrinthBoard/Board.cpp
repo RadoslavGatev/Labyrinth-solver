@@ -281,14 +281,17 @@ bool Board::LoadFromFile(const char* Filename)
 		return false;
 	}
 
+	RowsCount = Rows;
+	ColsCount = Cols;
+
 	ReadBoardFromFile(InputFile, ppNewBoard);
 
 	// Free the old contents of the board (if any)
 	FreeBoard(ppBoard, RowsCount);
 
 	ppBoard = ppNewBoard;
-	RowsCount = Rows;
-	ColsCount = Cols;
+
+	FindDoorsAndKeys();
 
 	return true;
 }
@@ -338,14 +341,20 @@ bool Board::GetBoardDimensionsFromFile(std::ifstream & InputFile, int& RowsCount
 
 		while (InputFile.get(c))
 		{
+			char next = InputFile.peek();
 			if (c == '\n')
 			{
-				// the number of columns on each line must be the same
-				if (cols != counter)
-					return false;
-
 				rows++;
-				counter = 0;
+				//TODO
+				if (next != '5')
+				{
+					counter = 0;
+				}
+				else
+				{
+					break;
+				}
+
 			}
 			else
 			{
@@ -355,8 +364,8 @@ bool Board::GetBoardDimensionsFromFile(std::ifstream & InputFile, int& RowsCount
 
 		// The last row of the labyrinth may or may not be followed by a blank line
 		// Thus if we just count the number of new lines, we may count one row less
-		if (c != '\n')
-			rows++;
+		/*if (c != '\n')
+			rows++;*/
 	}
 
 	RowsCount = rows;
@@ -385,21 +394,48 @@ void Board::ReadBoardFromFile(std::ifstream & InputFile, Cell ** ppBoard)
 
 	while (InputFile.get(c))
 	{
-		if (c == '\n')
+		//TODO
+		if (c == '\n' || c == '5')
 		{
 			row++;
 			col = 0;
 		}
 		else
 		{
-			if (c == CellDefinitions::Start)
+			if (row < this->GetRowsCount())
 			{
-				startRow = row;
-				startColumn = col;
-			}
+				if (c == CellDefinitions::Start)
+				{
+					startRow = row;
+					startColumn = col;
+				}
 
-			ppBoard[row][col] = Cell(this, c, row, col);
-			col++;
+				ppBoard[row][col] = Cell(this, c, row, col);
+				col++;
+			}
+			else
+			{
+				char door = c;
+				char key;
+				InputFile.get(key);
+
+				this->cellDefinitions.AddDoorAndKey(door, CellInfo(-1, -1, key));
+			}
+		}
+	}
+}
+
+void Board::FindDoorsAndKeys()
+{
+	for (size_t row = 0; row < GetRowsCount(); row++)
+	{
+		for (size_t col = 0; col < GetColsCount(); col++)
+		{
+			Cell* current = this->GetCell(row, col);
+			if (current->IsKey())
+			{
+				this->cellDefinitions.UpdateKeyLocation(current->GetSymbol(), row, col);
+			}
 		}
 	}
 }
@@ -480,4 +516,9 @@ void Board::MarkAllCellsNotVisited()
 		}
 	}
 
+}
+
+CellDefinitions& Board::GetDefinitions()
+{
+	return cellDefinitions;
 }

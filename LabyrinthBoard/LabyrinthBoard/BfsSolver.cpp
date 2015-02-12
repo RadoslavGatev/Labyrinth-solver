@@ -28,10 +28,7 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 
 	std::queue<CellTraverseInfo> cellQueue;
 
-	CellTraverseInfo info;
-	info.destination = pStart;
-	info.source = NULL;
-	info.direction = ' ';
+	CellTraverseInfo info(NULL, pStart, ' ');
 	cellQueue.push(info);
 
 	CellTraverseInfo pCurrent;

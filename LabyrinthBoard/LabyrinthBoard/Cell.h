@@ -33,7 +33,7 @@ private:
 	Board * pBoard;
 
 public:
-	Cell(Board* pBoard=NULL, char symbol='#', int Row=0, int Col=0);
+	Cell(Board* pBoard = NULL, char symbol = '#', int Row = 0, int Col = 0);
 
 public:
 	char GetSymbol() const;
@@ -44,6 +44,9 @@ public:
 	bool IsWall() const;
 	bool IsStart() const;
 	bool IsTarget() const;
+	bool IsKey() const;
+	bool IsDoor() const;
+
 
 	int GetRow() const;
 	int GetCol() const;
@@ -60,7 +63,7 @@ public:
 	Cell* GetBottomNeighbour() const;
 
 	void PrintInfo() const;
-	
+
 private:
 	void SetBoard(Board* pBoard);
 

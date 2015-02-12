@@ -5,12 +5,14 @@ struct CellInfo {
 public:
 	CellInfo(int row, int col, char caption) :row(row), col(col),
 		caption(caption)
-	{ }
+	{
+		isColected = false;
+	}
 
-private:
 	int row;
 	int col;
 	char caption;
+	bool isColected;
 };
 
 #endif
