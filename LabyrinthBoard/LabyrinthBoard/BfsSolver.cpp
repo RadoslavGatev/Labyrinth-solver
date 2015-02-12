@@ -4,7 +4,6 @@
 #include "BfsSolver.h"
 #include "Point.h"
 
-
 /**
  *
  *	Uses Breadth-first search to check if there is a path
@@ -27,35 +26,38 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 		path[i] = new Point[board.GetColsCount()];
 	}
 
-	std::queue<std::tuple<char, Cell*>> cellQueue;
+	std::queue<CellTraverseInfo> cellQueue;
 
-	cellQueue.push(std::make_tuple(' ', pStart));
+	CellTraverseInfo info;
+	info.destination = pStart;
+	info.source = NULL;
+	info.direction = ' ';
+	cellQueue.push(info);
 
-	Cell* pCurrent = NULL;
-	Cell* pPrevious = NULL;
+	CellTraverseInfo pCurrent;
 
 	while (!cellQueue.empty())
 	{
 		// Get the next element from the stack
-		pCurrent = std::get<1>(cellQueue.front());
-		pCurrent->MarkVisited();
+		pCurrent = cellQueue.front();
+		pCurrent.destination->MarkVisited();
 
-		char direction = std::get<0>(cellQueue.front());
 		cellQueue.pop();
 
 		//store it in path
-		if (pPrevious != NULL)
+		if (pCurrent.source != NULL)
 		{
-			path[pCurrent->GetRow()][pCurrent->GetCol()] = Point(pPrevious->GetRow(), pPrevious->GetCol(), direction);
+			path[pCurrent.destination->GetRow()][pCurrent.destination->GetCol()] =
+				Point(pCurrent.source->GetRow(), pCurrent.source->GetCol(), pCurrent.direction);
 		}
 
 		// Display some information
 		std::cout << "\n   Queue size: " << cellQueue.size();
 		std::cout << "\n   Popped ";
-		pCurrent->PrintInfo();
+		pCurrent.destination->PrintInfo();
 		std::cout << std::endl;
 
-		if (pCurrent->IsTarget())
+		if (pCurrent.destination->IsTarget())
 		{
 			// If the target is found, then there is a path
 			break;
@@ -63,21 +65,19 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 		else
 		{
 			// Otherwise keep looking
-			AddIfPassableAndNotVisited(cellQueue, pCurrent->GetLeftNeighbour(), 'L');
-			AddIfPassableAndNotVisited(cellQueue, pCurrent->GetRightNeighbour(), 'R');
-			AddIfPassableAndNotVisited(cellQueue, pCurrent->GetTopNeighbour(), 'U');
-			AddIfPassableAndNotVisited(cellQueue, pCurrent->GetBottomNeighbour(), 'D');
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetLeftNeighbour(), 'L', pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetRightNeighbour(), 'R', pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetTopNeighbour(), 'U', pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetBottomNeighbour(), 'D', pCurrent.destination);
 		}
-
-		pPrevious = pCurrent;
 	}
 
 	//add path
 	std::stack<char> currentPath;
-	if (pCurrent->IsTarget())
+	if (pCurrent.destination->IsTarget())
 	{
 
-		Point currentPoint = path[pCurrent->GetRow()][pCurrent->GetCol()];
+		Point currentPoint = path[pCurrent.destination->GetRow()][pCurrent.destination->GetCol()];
 
 		do
 		{
@@ -131,7 +131,7 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
  *	The function also marks the cell as visited.
  *
  */
-void BfsSolver::AddIfPassableAndNotVisited(std::queue<std::tuple<char, Cell*>> & cellQueue, Cell* pCell, char direction)
+void BfsSolver::AddIfPassableAndNotVisited(std::queue<CellTraverseInfo> &cellQueue, Cell* pCell, char direction, Cell* pSource)
 {
 	std::cout << "      Should we add ";
 	pCell->PrintInfo();
@@ -145,7 +145,7 @@ void BfsSolver::AddIfPassableAndNotVisited(std::queue<std::tuple<char, Cell*>> &
 		pCell->MarkVisited();
 
 		// Enqeue the cell
-		cellQueue.push(std::make_tuple(direction, pCell));
+		cellQueue.push(CellTraverseInfo(pSource, pCell, direction));
 	}
 	else
 	{

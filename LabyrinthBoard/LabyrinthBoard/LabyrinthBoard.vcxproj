@@ -89,6 +89,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellInfo.h" />
+    <ClInclude Include="CellTraverseInfo.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Solver.h" />
   </ItemGroup>

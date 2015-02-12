@@ -4,13 +4,14 @@
 #include <queue>
 
 #include "Solver.h"
+#include "CellTraverseInfo.h"
 
 
 class BfsSolver : public Solver
 {
 private:
 	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart);
-	void AddIfPassableAndNotVisited(std::queue<std::tuple<char, Cell*>> & cellQueue, Cell* pCell, char direction);
+	void AddIfPassableAndNotVisited(std::queue<CellTraverseInfo>& cellQueue, Cell* pCell, char direction, Cell* pSource);
 };
 
 
