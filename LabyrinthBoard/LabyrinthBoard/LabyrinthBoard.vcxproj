@@ -81,6 +81,7 @@
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellDefinitions.cpp" />
     <ClCompile Include="CellDefinitions.h" />
+    <ClCompile Include="DirectionsUtility.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Solver.cpp" />
   </ItemGroup>

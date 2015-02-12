@@ -13,7 +13,7 @@ public:
 	static const char Corridor;
 
 	CellInfo* FindKeyForADoor(char doorSymbol);
-	void MarkAsCollected(char doorSymbol, char key);
+	void MarkAsCollected(char key);
 	bool IsCollected(char doorSymbol);
 	void AddDoorAndKey(char doorSymbol, CellInfo keyCell);
 	void UpdateKeyLocation(char key, int row, int column);

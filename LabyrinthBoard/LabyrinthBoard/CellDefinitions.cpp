@@ -15,12 +15,14 @@ CellInfo * CellDefinitions::FindKeyForADoor(char doorSymbol)
 	return &this->doorsAndKeys.find(doorSymbol)->second;
 }
 
-void CellDefinitions::MarkAsCollected(char doorSymbol, char key)
+void CellDefinitions::MarkAsCollected(char key)
 {
-	CellInfo& cellInfo = this->doorsAndKeys.at(doorSymbol);
-	if (cellInfo.caption == key)
+	for (auto& kv : doorsAndKeys)
 	{
-		cellInfo.isColected = true;
+		if (kv.second.caption == key)
+		{
+			kv.second.isColected = true;
+		}
 	}
 }
 

@@ -15,7 +15,7 @@ public:
 	std::vector<char> PathExists(Board& board);
 
 protected:
-	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart) = 0;
+	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart, char target) = 0;
 };
 
 

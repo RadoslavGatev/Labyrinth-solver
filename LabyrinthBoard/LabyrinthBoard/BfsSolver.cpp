@@ -3,6 +3,7 @@
 
 #include "BfsSolver.h"
 #include "Point.h"
+#include "DirectionsUtility.h"
 
 /**
  *
@@ -10,7 +11,7 @@
  *	between pStart and the target cell in the board.
  *
  */
-std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
+std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char target)
 {
 	std::cout << "Solving with BFS\n\n";
 
@@ -26,6 +27,7 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 		path[i] = new Point[board.GetColsCount()];
 	}
 
+	//start solving
 	std::queue<CellTraverseInfo> cellQueue;
 
 	CellTraverseInfo info(NULL, pStart, ' ');
@@ -54,7 +56,7 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 		pCurrent.destination->PrintInfo();
 		std::cout << std::endl;
 
-		if (pCurrent.destination->IsTarget())
+		if (pCurrent.destination->GetSymbol() == target)
 		{
 			// If the target is found, then there is a path
 			break;
@@ -70,15 +72,15 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 	}
 
 	//add path
-	std::stack<char> currentPath;
-	if (pCurrent.destination->IsTarget())
+	std::stack<Point> currentPath;
+	if (pCurrent.destination->GetSymbol() == target)
 	{
 
 		Point currentPoint = path[pCurrent.destination->GetRow()][pCurrent.destination->GetCol()];
 
 		do
 		{
-			currentPath.push(currentPoint.direction);
+			currentPath.push(currentPoint);
 
 			int previousRow = currentPoint.row;
 			int previousCol = currentPoint.col;
@@ -113,7 +115,40 @@ std::vector<char> BfsSolver::Solve_Internal(Board& board, Cell* pStart)
 
 	while (!currentPath.empty())
 	{
-		results.push_back(currentPath.top());
+		Point current = currentPath.top();
+
+		Cell* currentCell = board.GetCell(current.row, current.col);
+		if (currentCell->IsKey())
+		{
+			board.GetDefinitions().MarkAsCollected(currentCell->GetSymbol());
+		}
+		else if (currentCell->IsDoor())
+		{
+			if (!board.GetDefinitions().IsCollected(currentCell->GetSymbol()))
+			{
+				CellInfo* keyInfo = board.GetDefinitions().FindKeyForADoor(currentCell->GetSymbol());
+				if (keyInfo != NULL)
+				{
+					board.MarkAllCellsNotVisited();
+					board.GetDefinitions().MarkAsCollected(keyInfo->caption);
+					std::vector<char> pathToKey = Solve_Internal(board, currentCell, keyInfo->caption);
+
+					//path to key
+					results.insert(results.end(), pathToKey.begin(), pathToKey.end());
+
+					//path back to the door
+					for (int i = pathToKey.size() - 1; i >= 0; i--)
+					{
+						results.push_back(DirectionsUtility::GetReverse(pathToKey.at(i)));
+					}
+
+					//results.push_back(current.direction);
+				}
+			}
+		}
+
+		results.push_back(current.direction);
+
 		currentPath.pop();
 	}
 
@@ -134,7 +169,7 @@ void BfsSolver::AddIfPassableAndNotVisited(std::queue<CellTraverseInfo> &cellQue
 	pCell->PrintInfo();
 	std::cout << "? ...";
 
-	if (pCell && pCell->IsPassable() && !pCell->IsVisited())
+	if (pCell && (pCell->IsPassable() || pCell->IsDoor() || pCell->IsKey()) && !pCell->IsVisited())
 	{
 		std::cout << "Yes";
 

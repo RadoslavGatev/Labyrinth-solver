@@ -50,5 +50,5 @@ std::vector<char> Solver::PathExists(Board& board)
 		std::cout << std::endl << std::endl;
 	}
 
-	return this->Solve_Internal(board, pStart);
+	return this->Solve_Internal(board, pStart, CellDefinitions::End);
 }

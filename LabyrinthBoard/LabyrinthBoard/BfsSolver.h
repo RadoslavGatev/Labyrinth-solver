@@ -10,7 +10,7 @@
 class BfsSolver : public Solver
 {
 private:
-	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart);
+	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart, char target);
 	void AddIfPassableAndNotVisited(std::queue<CellTraverseInfo>& cellQueue, Cell* pCell, char direction, Cell* pSource);
 };
 
