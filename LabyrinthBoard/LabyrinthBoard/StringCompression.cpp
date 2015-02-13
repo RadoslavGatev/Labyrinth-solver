@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-std::string StringCompression::Compress(std::string toCompress)
+std::string StringCompression::RLE(std::string toCompress)
 {
 	std::string::size_type found = 0, nextfound = 0;
 	std::ostringstream oss;

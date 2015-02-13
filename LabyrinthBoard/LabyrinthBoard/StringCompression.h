@@ -6,7 +6,7 @@
 class StringCompression
 {
 public:
-	static std::string Compress(std::string toCompress);
+	static std::string RLE(std::string toCompress);
 };
 
 #endif

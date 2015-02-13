@@ -8,7 +8,7 @@
 
 int main()
 {
-	std::string result = StringCompression::Compress("LLLRRRLRLRLLRR");
+	std::string result = StringCompression::RLE("LLLRRRLRLRLLRR");
 	std::cout << result;
 }
 
