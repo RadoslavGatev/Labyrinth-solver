@@ -39,6 +39,12 @@
     <ClCompile Include="DirectionsUtility.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="StringCompression.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringCompression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BfsSolver.h">

@@ -84,6 +84,8 @@
     <ClCompile Include="DirectionsUtility.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Solver.cpp" />
+    <ClCompile Include="StringCompression.cpp" />
+    <ClCompile Include="StringCompression.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BfsSolver.h" />

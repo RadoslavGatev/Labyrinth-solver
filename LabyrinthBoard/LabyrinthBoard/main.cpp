@@ -4,9 +4,15 @@
 
 #include "Board.h"
 #include "BfsSolver.h"
+#include "StringCompression.h"
 
+int main()
+{
+	std::string result = StringCompression::Compress("LLLRRRLRLRLLRR");
+	std::cout << result;
+}
 
-int main(int argc, char* argv[])
+int maink(int argc, char* argv[])
 {
 	// Will store the path to the file to open
 	char path[_MAX_PATH];
