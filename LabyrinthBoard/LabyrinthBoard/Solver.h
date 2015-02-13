@@ -12,7 +12,7 @@ public:
 	virtual ~Solver();
 
 public:
-	std::vector<char> PathExists(Board& board);
+	std::vector<char> Solve(Board& board);
 
 protected:
 	virtual std::vector<char> Solve_Internal(Board& board, Cell* pStart, char target) = 0;

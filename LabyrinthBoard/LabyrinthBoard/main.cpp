@@ -6,13 +6,8 @@
 #include "BfsSolver.h"
 #include "StringCompression.h"
 
-int main()
-{
-	std::string result = StringCompression::RLE("LLLRRRLRLRLLRR");
-	std::cout << result;
-}
 
-int maink(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	// Will store the path to the file to open
 	char path[_MAX_PATH];
@@ -51,21 +46,20 @@ int maink(int argc, char* argv[])
 		pSolver = new BfsSolver();
 
 		// Try to find the path
-		std::vector<char> pathExists = pSolver->PathExists(board);
+		std::vector<char> path = pSolver->Solve(board);
 
 		std::cout << std::endl;
-		for (size_t i = 0; i < pathExists.size(); i++)
+		for (size_t i = 0; i < path.size(); i++)
 		{
-			std::cout << pathExists.at(i);
+			std::cout << path.at(i);
 		}
+
+		std::string strPath(path.begin(), path.end());
+
+		std::cout << std::endl << StringCompression::RLE(strPath);
 
 		// Do not forget to delete the solver object!
 		delete pSolver;
-
-		/*	std::cout
-				<< "\n   "
-				<< (pathExists ? "There is a path!" : "Sorry, there is no path!")
-				<< std::endl;*/
 	}
 	else
 	{

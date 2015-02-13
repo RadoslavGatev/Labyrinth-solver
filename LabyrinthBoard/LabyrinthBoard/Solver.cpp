@@ -25,10 +25,8 @@ Solver::~Solver()
  *
  *
  **/
-std::vector<char> Solver::PathExists(Board& board)
+std::vector<char> Solver::Solve(Board& board)
 {
-	std::cout << "Let's try to find if a path exists!\n\n";
-
 	// First mark all cells as not visited.
 	// This is important, as another search may have been carried
 	// on the board

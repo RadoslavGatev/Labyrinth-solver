@@ -2,7 +2,6 @@
 #include <stack>
 
 #include "BfsSolver.h"
-#include "Point.h"
 #include "DirectionsUtility.h"
 
 /**
@@ -13,8 +12,6 @@
  */
 std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char target)
 {
-	std::cout << "Solving with BFS\n\n";
-
 	Point** path = new Point*[board.GetRowsCount()];
 
 	for (size_t i = 0; i < board.GetRowsCount(); i++)
@@ -50,12 +47,6 @@ std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char t
 				Point(pCurrent.source->GetRow(), pCurrent.source->GetCol(), pCurrent.direction);
 		}
 
-		// Display some information
-		std::cout << "\n   Queue size: " << cellQueue.size();
-		std::cout << "\n   Popped ";
-		pCurrent.destination->PrintInfo();
-		std::cout << std::endl;
-
 		if (pCurrent.destination->GetSymbol() == target)
 		{
 			// If the target is found, then there is a path
@@ -64,10 +55,14 @@ std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char t
 		else
 		{
 			// Otherwise keep looking
-			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetLeftNeighbour(), 'L', pCurrent.destination);
-			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetRightNeighbour(), 'R', pCurrent.destination);
-			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetTopNeighbour(), 'U', pCurrent.destination);
-			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetBottomNeighbour(), 'D', pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetLeftNeighbour(),
+				DirectionsUtility::Left, pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetRightNeighbour(),
+				DirectionsUtility::Right, pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetTopNeighbour(),
+				DirectionsUtility::Up, pCurrent.destination);
+			AddIfPassableAndNotVisited(cellQueue, pCurrent.destination->GetBottomNeighbour(),
+				DirectionsUtility::Down, pCurrent.destination);
 		}
 	}
 
@@ -93,15 +88,6 @@ std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char t
 		} while (!currentPoint.IsNull());
 	}
 
-	for (size_t r = 0; r < board.GetRowsCount(); r++)
-	{
-		for (size_t c = 0; c < board.GetColsCount(); c++)
-		{
-			std::cout << path[r][c].direction;
-		}
-		std::cout << std::endl;
-	}
-
 	//delete
 	for (size_t i = 0; i < board.GetRowsCount(); i++)
 	{
@@ -112,10 +98,37 @@ std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char t
 
 	//get results from the stack
 	std::vector<char> results;
+	this->ExtractPath(board, results, currentPath);
 
-	while (!currentPath.empty())
+	return results;
+}
+
+
+/**
+ *
+ *	Adds a cell to the queue cellQueue, but only if it is passable
+ *	and has not been visited until now.
+ *	The function also marks the cell as visited.
+ *
+ */
+void BfsSolver::AddIfPassableAndNotVisited(std::queue<CellTraverseInfo> &cellQueue, Cell* pCell, char direction, Cell* pSource)
+{
+	if (pCell && (pCell->IsPassable() || pCell->IsDoor() || pCell->IsKey()) && !pCell->IsVisited())
 	{
-		Point current = currentPath.top();
+		// Mark the cell as visited
+		pCell->MarkVisited();
+
+		// Enqeue the cell
+		cellQueue.push(CellTraverseInfo(pSource, pCell, direction));
+	}
+}
+
+
+void BfsSolver::ExtractPath(Board& board, std::vector<char>& results, std::stack<Point>& pathStack)
+{
+	while (!pathStack.empty())
+	{
+		Point current = pathStack.top();
 
 		Cell* currentCell = board.GetCell(current.row, current.col);
 		if (currentCell->IsKey())
@@ -141,48 +154,12 @@ std::vector<char> BfsSolver::Solve_Internal(Board & board, Cell * pStart, char t
 					{
 						results.push_back(DirectionsUtility::GetReverse(pathToKey.at(i)));
 					}
-
-					//results.push_back(current.direction);
 				}
 			}
 		}
 
 		results.push_back(current.direction);
 
-		currentPath.pop();
+		pathStack.pop();
 	}
-
-	return results;
-}
-
-
-/**
- *
- *	Adds a cell to the queue cellQueue, but only if it is passable
- *	and has not been visited until now.
- *	The function also marks the cell as visited.
- *
- */
-void BfsSolver::AddIfPassableAndNotVisited(std::queue<CellTraverseInfo> &cellQueue, Cell* pCell, char direction, Cell* pSource)
-{
-	std::cout << "      Should we add ";
-	pCell->PrintInfo();
-	std::cout << "? ...";
-
-	if (pCell && (pCell->IsPassable() || pCell->IsDoor() || pCell->IsKey()) && !pCell->IsVisited())
-	{
-		std::cout << "Yes";
-
-		// Mark the cell as visited
-		pCell->MarkVisited();
-
-		// Enqeue the cell
-		cellQueue.push(CellTraverseInfo(pSource, pCell, direction));
-	}
-	else
-	{
-		std::cout << "No";
-	}
-
-	std::cout << std::endl;
 }
