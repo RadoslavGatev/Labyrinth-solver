@@ -7,6 +7,10 @@
 #include "StringCompression.h"
 
 
+/** 
+ *The project was forked from https://github.com/semerdzhiev/sdp-samples 
+ *	The repository of this project is on the following location https://github.com/RadoslavGatev/Labyrinth-solver
+ */
 int main(int argc, char* argv[])
 {
 	// Will store the path to the file to open

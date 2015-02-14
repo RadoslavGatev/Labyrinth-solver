@@ -9,14 +9,7 @@ class Cell
 {
 private:
 
-	///
 	/// The symbol used to dispay this cell.
-	/// It is also used to determine its type:
-	///		- ' ' - Corridor
-	///		- '#' - Wall
-	///		- '$' - Target
-	///		- '^' - Start
-	///
 	char Symbol;
 
 	/// The row on whiche the cell is located

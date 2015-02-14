@@ -6,7 +6,7 @@
 
 /**
  *
- *	Uses Breadth-first search to check if there is a path
+ *	Uses Breadth-first search to fin the path
  *	between pStart and the target cell in the board.
  *
  */

@@ -3,9 +3,15 @@
 
 #include <iostream>
 
+/**
+*	Contains compression algorithms.
+*/
 class StringCompression
 {
 public:
+	/**
+	*	Run Length Encoding. Source from RosettaCode.
+	*/
 	static std::string RLE(std::string toCompress);
 };
 

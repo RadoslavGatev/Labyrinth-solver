@@ -49,6 +49,12 @@ public:
 	int GetRowsCount() const;
 	int GetColsCount() const;
 
+	/**
+	 *	The file must adhere to the following rules:
+	 *	1. Labyrinth definition
+	 *	2. Newline
+	 *  3. Sequence of doors and keys
+	 */
 	bool LoadFromFile(const char* Filename);
 
 	Cell* GetCell(int Row, int Col) const;

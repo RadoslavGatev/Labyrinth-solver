@@ -18,6 +18,7 @@ std::string StringCompression::RLE(std::string toCompress)
 		found = nextfound;
 		nextfound = toCompress.find_first_not_of(toCompress[found], found);
 	}
+
 	//since we must not discard the last characters we add them at the end of the string
 	std::string rest(toCompress.substr(found));//last run of characters starts at position found 
 	oss << rest.length() << toCompress[found];
