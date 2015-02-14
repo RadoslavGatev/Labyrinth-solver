@@ -139,7 +139,7 @@ void BfsSolver::ExtractPath(Board& board, std::vector<char>& results, std::stack
 		{
 			if (!board.GetDefinitions().IsCollected(currentCell->GetSymbol()))
 			{
-				CellInfo* keyInfo = board.GetDefinitions().FindKeyForADoor(currentCell->GetSymbol());
+				KeyInfo* keyInfo = board.GetDefinitions().FindKeyForADoor(currentCell->GetSymbol());
 				if (keyInfo != NULL)
 				{
 					board.MarkAllCellsNotVisited();

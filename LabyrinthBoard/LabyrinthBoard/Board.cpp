@@ -419,7 +419,7 @@ void Board::ReadBoardFromFile(std::ifstream & InputFile, Cell ** ppBoard)
 				char key;
 				InputFile.get(key);
 
-				this->cellDefinitions.AddDoorAndKey(door, CellInfo(-1, -1, key));
+				this->cellDefinitions.AddDoorAndKey(door, KeyInfo(-1, -1, key));
 			}
 		}
 	}

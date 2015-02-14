@@ -1,9 +1,9 @@
-#ifndef CELLINFO_H
-#define CELLINFO_H
+#ifndef KEYINFO_H
+#define KEYINFO_H
 
-struct CellInfo {
+struct KeyInfo {
 public:
-	CellInfo(int row, int col, char caption) :row(row), col(col),
+	KeyInfo(int row, int col, char caption) :row(row), col(col),
 		caption(caption)
 	{
 		isColected = false;

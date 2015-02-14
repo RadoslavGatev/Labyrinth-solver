@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "CellInfo.h"
+#include "KeyInfo.h"
 
 class CellDefinitions {
 public:
@@ -12,16 +12,16 @@ public:
 	static const char End;
 	static const char Corridor;
 
-	CellInfo* FindKeyForADoor(char doorSymbol);
+	KeyInfo* FindKeyForADoor(char doorSymbol);
 	void MarkAsCollected(char key);
 	bool IsCollected(char doorSymbol);
-	void AddDoorAndKey(char doorSymbol, CellInfo keyCell);
+	void AddDoorAndKey(char doorSymbol, KeyInfo keyCell);
 	void UpdateKeyLocation(char key, int row, int column);
 	bool IsKey(char key);
 	bool IsDoor(char door);
 
 private:
-	std::map<char, CellInfo> doorsAndKeys;
+	std::map<char, KeyInfo> doorsAndKeys;
 
 };
 

@@ -5,7 +5,7 @@ const char CellDefinitions::Start = 'S';
 const char CellDefinitions::End = 'X';
 const char CellDefinitions::Corridor = ' ';
 
-CellInfo * CellDefinitions::FindKeyForADoor(char doorSymbol)
+KeyInfo * CellDefinitions::FindKeyForADoor(char doorSymbol)
 {
 	if (this->doorsAndKeys.find(doorSymbol) == this->doorsAndKeys.end())
 	{
@@ -28,13 +28,13 @@ void CellDefinitions::MarkAsCollected(char key)
 
 bool CellDefinitions::IsCollected(char doorSymbol)
 {
-	CellInfo& cellInfo = this->doorsAndKeys.at(doorSymbol);
+	KeyInfo& cellInfo = this->doorsAndKeys.at(doorSymbol);
 	return cellInfo.isColected;
 }
 
-void CellDefinitions::AddDoorAndKey(char doorSymbol, CellInfo keyCell)
+void CellDefinitions::AddDoorAndKey(char doorSymbol, KeyInfo keyCell)
 {
-	this->doorsAndKeys.insert(std::pair<char, CellInfo>(doorSymbol, keyCell));
+	this->doorsAndKeys.insert(std::pair<char, KeyInfo>(doorSymbol, keyCell));
 }
 
 void CellDefinitions::UpdateKeyLocation(char key, int row, int column)
