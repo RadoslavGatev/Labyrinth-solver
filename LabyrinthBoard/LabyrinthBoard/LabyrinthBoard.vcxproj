@@ -86,6 +86,7 @@
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="StringCompression.cpp" />
     <ClCompile Include="StringCompression.h" />
+    <ClCompile Include="StringCompressionTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BfsSolver.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="CellTraverseInfo.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Solver.h" />
+    <ClInclude Include="StringCompressionTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

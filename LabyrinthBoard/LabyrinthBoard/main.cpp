@@ -5,14 +5,19 @@
 #include "Board.h"
 #include "BfsSolver.h"
 #include "StringCompression.h"
+#include "StringCompressionTests.h"
 
 
-/** 
- *The project was forked from https://github.com/semerdzhiev/sdp-samples 
+/**
+ *The project was forked from https://github.com/semerdzhiev/sdp-samples
  *	The repository of this project is on the following location https://github.com/RadoslavGatev/Labyrinth-solver
  */
 int main(int argc, char* argv[])
 {
+	//perform tests
+	StringCompressionTests tests;
+	tests.PerformTests();
+
 	// Will store the path to the file to open
 	char path[_MAX_PATH];
 

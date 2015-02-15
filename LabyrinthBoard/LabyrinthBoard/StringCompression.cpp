@@ -21,6 +21,11 @@ std::string StringCompression::RLE(std::string toCompress)
 
 	//since we must not discard the last characters we add them at the end of the string
 	std::string rest(toCompress.substr(found));//last run of characters starts at position found 
-	oss << rest.length() << toCompress[found];
+
+	if (rest.length() > 1)
+	{
+		oss << rest.length();
+	}
+	oss << toCompress[found];
 	return oss.str();
 }

@@ -45,6 +45,9 @@
     <ClCompile Include="StringCompression.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StringCompressionTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BfsSolver.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringCompressionTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
