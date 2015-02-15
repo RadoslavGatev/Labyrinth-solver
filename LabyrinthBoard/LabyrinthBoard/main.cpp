@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	StringCompressionTests tests;
 	tests.PerformTests();
 
-	std::cout << StringCompression::MultipleRLE("DDLDDLDDLDDL");
+	//std::cout << StringCompression::MultipleRLE("DDLDDLDDL") << std::endl;
 
 	// Will store the path to the file to open
 	char path[_MAX_PATH];
@@ -72,6 +72,7 @@ int main(int argc, char* argv[])
 			std::string strPath(path.begin(), path.end());
 
 			std::cout << std::endl << StringCompression::RLE(strPath);
+			std::cout << std::endl << StringCompression::MultipleRLE(strPath);
 
 			// Do not forget to delete the solver object!
 			delete pSolver;

@@ -7,6 +7,7 @@ public:
 
 private:
 	void TestRLE();
+	void TestMultipleRLE();
 };
 
 #endif

@@ -35,7 +35,7 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 	std::string result = RLE(toCompress);
 
 	std::ostringstream oss;
-	for (int substringCount = result.size() / 2; substringCount >= 3; substringCount--)
+	for (int substringCount = result.size() / 2; substringCount >= 2; substringCount--)
 	{
 		int compressedTo = 0;
 		int lastCompressedTo = 0;
