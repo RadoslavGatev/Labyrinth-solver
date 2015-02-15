@@ -32,17 +32,18 @@ std::string StringCompression::RLE(std::string toCompress)
 
 std::string StringCompression::MultipleRLE(std::string toCompress)
 {
-	toCompress = RLE(toCompress);
+	std::string result = RLE(toCompress);
 
 	std::ostringstream oss;
-	for (int substringCount = toCompress.size() / 2; substringCount >= 3; substringCount--)
+	for (int substringCount = result.size() / 2; substringCount >= 3; substringCount--)
 	{
 		int compressedTo = 0;
-		for (size_t offset = 0; offset + 2 * substringCount - 1 < toCompress.size(); offset++)
+		int lastCompressedTo = 0;
+		for (size_t offset = 0; offset + 2 * substringCount - 1 < result.size(); offset++)
 		{
 			std::string::size_type nextfound = 0;
-			std::string substr = toCompress.substr(offset, substringCount);
-			nextfound = toCompress.find(substr, offset + substringCount);
+			std::string substr = result.substr(offset, substringCount);
+			nextfound = result.find(substr, offset + substringCount);
 
 			int occurences = 1;
 			while (nextfound != std::string::npos)
@@ -54,11 +55,12 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 				else
 				{
 					occurences++;
+					compressedTo = nextfound;
 
 					int next = offset + substringCount* occurences;
-					if (toCompress.size() - next >= substringCount)
+					if (result.size() - next >= substringCount)
 					{
-						nextfound = toCompress.find(substr, next);
+						nextfound = result.find(substr, next);
 					}
 					else
 					{
@@ -69,25 +71,26 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 
 			if (occurences > 1)
 			{
-				std::string before(toCompress.substr(compressedTo, compressedTo - offset));
+				std::string before(result.substr(lastCompressedTo, offset - lastCompressedTo));
 
-				oss << occurences;
+				oss << before << occurences;
 				oss << "(" << substr << ")";
 
 				compressedTo = offset + occurences*substringCount;
+				lastCompressedTo = compressedTo;
 				offset = compressedTo - 1;
 			}
 		}
 
 		if (compressedTo != 0)
 		{
-			std::string rest(toCompress.substr(compressedTo));
+			std::string rest(result.substr(compressedTo));
 			oss << rest;
-			toCompress = oss.str();
+			result = oss.str();
 		}
 
 		oss.str(std::string());
 	}
 
-	return toCompress;
+	return result;
 }
