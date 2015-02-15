@@ -38,8 +38,7 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 	for (int substringCount = toCompress.size() / 2; substringCount >= 3; substringCount--)
 	{
 		int compressedTo = 0;
-		for (size_t offset = 0; offset + 2 * substringCount < toCompress.size() &&
-			compressedTo <= offset; offset++)
+		for (size_t offset = 0; offset + 2 * substringCount - 1 < toCompress.size(); offset++)
 		{
 			std::string::size_type nextfound = 0;
 			std::string substr = toCompress.substr(offset, substringCount);
@@ -70,13 +69,13 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 
 			if (occurences > 1)
 			{
-
 				std::string before(toCompress.substr(compressedTo, compressedTo - offset));
 
 				oss << occurences;
 				oss << "(" << substr << ")";
 
 				compressedTo = offset + occurences*substringCount;
+				offset = compressedTo - 1;
 			}
 		}
 
