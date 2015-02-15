@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
 	StringCompressionTests tests;
 	tests.PerformTests();
 
+	std::cout << StringCompression::MultipleRLE("DDLDDLDDLDDL");
+
 	// Will store the path to the file to open
 	char path[_MAX_PATH];
 
