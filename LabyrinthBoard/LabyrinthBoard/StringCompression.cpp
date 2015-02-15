@@ -48,6 +48,7 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 			int occurences = 1;
 			while (nextfound != std::string::npos)
 			{
+				//if it isn't consecutive
 				if (nextfound != offset + substringCount*occurences)
 				{
 					break;
@@ -60,6 +61,7 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 					int next = offset + substringCount* occurences;
 					if (result.size() - next >= substringCount)
 					{
+						//try to find the next
 						nextfound = result.find(substr, next);
 					}
 					else
@@ -69,6 +71,7 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 				}
 			}
 
+			//if there are multiple occurences - perform the compression.
 			if (occurences > 1)
 			{
 				std::string before(result.substr(lastCompressedTo, offset - lastCompressedTo));
@@ -82,6 +85,7 @@ std::string StringCompression::MultipleRLE(std::string toCompress)
 			}
 		}
 
+		//if something is compressed then refresh the result string
 		if (compressedTo != 0)
 		{
 			std::string rest(result.substr(compressedTo));

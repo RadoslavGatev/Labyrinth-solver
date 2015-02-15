@@ -7,7 +7,6 @@ void StringCompressionTests::PerformTests()
 {
 	this->TestRLE();
 	this->TestMultipleRLE();
-
 }
 
 void StringCompressionTests::TestRLE()
@@ -28,30 +27,30 @@ void StringCompressionTests::TestRLE()
 	std::cout << std::endl;
 
 
-	std::string nonSequentive("ABCDEFG");
-	auto result = StringCompression::RLE(nonSequentive);
+	std::string nonRepetitive("ABCDEFG");
+	auto result = StringCompression::RLE(nonRepetitive);
 
-	if (result.compare(nonSequentive) == 0)
+	if (result.compare(nonRepetitive) == 0)
 	{
-		std::cout << "OK) Non-sequentive pass.";
+		std::cout << "OK) Non-repetitive pass.";
 	}
 	else
 	{
-		std::cout << "ERROR: Non-sequentive fails.";
+		std::cout << "ERROR: Non-repetitive fails.";
 	}
 	std::cout << std::endl;
 
 
-	std::string sequentive("XAAABBBBCDA");
-	auto sequentiveResult = StringCompression::RLE(sequentive);
+	std::string repetitive("XAAABBBBCDA");
+	auto repetitiveResult = StringCompression::RLE(repetitive);
 
-	if (sequentiveResult.compare("X3A4BCDA") == 0)
+	if (repetitiveResult.compare("X3A4BCDA") == 0)
 	{
-		std::cout << "OK) Sequentive pass.";
+		std::cout << "OK) Repetitive pass.";
 	}
 	else
 	{
-		std::cout << "ERROR: Sequentive fails.";
+		std::cout << "ERROR: Repetitive fails.";
 	}
 	std::cout << std::endl;
 }
@@ -75,30 +74,30 @@ void StringCompressionTests::TestMultipleRLE()
 	std::cout << std::endl;
 
 
-	std::string nonSequentive("ABCDEFG");
-	auto result = StringCompression::MultipleRLE(nonSequentive);
+	std::string nonRepetitive("ABCDEFG");
+	auto result = StringCompression::MultipleRLE(nonRepetitive);
 
-	if (result.compare(nonSequentive) == 0)
+	if (result.compare(nonRepetitive) == 0)
 	{
-		std::cout << "OK) Non-sequentive pass.";
+		std::cout << "OK) Non-repetitive pass.";
 	}
 	else
 	{
-		std::cout << "ERROR: Non-sequentive fails.";
+		std::cout << "ERROR: Non-repetitive fails.";
 	}
 	std::cout << std::endl;
 
 
-	std::string sequentive("XAAABBBBCDA");
-	auto sequentiveResult = StringCompression::MultipleRLE(sequentive);
+	std::string repetitive("XAAABBBBCDA");
+	auto repetitiveResult = StringCompression::MultipleRLE(repetitive);
 
-	if (sequentiveResult.compare("X3A4BCDA") == 0)
+	if (repetitiveResult.compare("X3A4BCDA") == 0)
 	{
-		std::cout << "OK) Sequentive pass.";
+		std::cout << "OK) Repetitive pass.";
 	}
 	else
 	{
-		std::cout << "ERROR: Sequentive fails.";
+		std::cout << "ERROR: Repetitive fails.";
 	}
 	std::cout << std::endl;
 
